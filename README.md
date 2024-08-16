@@ -5,6 +5,10 @@ Este proyecto está diseñado para realizar pruebas automatizadas en la API de P
 ## Requisitos
 
 - **Node.js**: Se recomienda la versión 14 o superior. Puedes descargar e instalar Node.js desde [nodejs.org](https://nodejs.org/).
+- **Playwright**: Se utiliza para realizar pruebas automatizadas e2e. Puedes instalarlo con el siguiente comando:
+
+  ```bash
+  npm install -D @playwright/test
 
 ## Configuración del entorno
 
