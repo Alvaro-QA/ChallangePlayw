@@ -6,7 +6,7 @@ import * as path from 'path';
 
 dotenv.config(); // Cargar variables de entorno desde el archivo .env
 
-// Obtener la clave secreta desde las variables de entorno
+// Obtener la clave secreta desde la variable de entorno
 export const secretKey = process.env.SECRET_KEY || '';
 export const hashSecretKey = createHash('sha256').update(secretKey).digest('hex');
 
@@ -59,11 +59,15 @@ export async function downloadImage(imageUrl: string, savePath: string) {
     }
 }
 
-// Función para validar la extensión y el tamaño del archivo de imagen
+/// Función para validar la extensión y el tamaño del archivo de imagen
 export function validateImageFile(filePath: string) {
     const validExtensions = ['.jpg', '.jpeg', '.png', '.svg'];
     const extname = path.extname(filePath).toLowerCase();
     const fileSize = fs.statSync(filePath).size;
+
+    // Loguear el tipo de archivo y el tamaño
+    console.log(`Tipo de archivo: ${extname}`);
+    console.log(`Tamaño del archivo: ${fileSize} bytes`);
 
     if (!validExtensions.includes(extname)) {
         throw new Error('La extensión del archivo no es válida');

@@ -23,7 +23,7 @@ export class PokemonPage {
 
     async downloadAndSaveImage(imageUrl: string, savePath: string) {
         const fetch = (await import('node-fetch')).default;
-        const response = await fetch(imageUrl);
+        const response = await fetch(imageUrl); 
         if (!response.ok) {
             throw new Error(`Error al descargar la imagen: ${response.statusText}`);
         }

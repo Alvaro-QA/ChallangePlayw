@@ -1,8 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
-import { BASE_URL } from './config/environments'; // Asegúrate de que esta ruta sea correcta
-
+import { BASE_URL } from './config/environments'; 
 export default defineConfig({
-    testDir: './tests', // Asegúrate de que esta ruta sea correcta
+    testDir: './tests', 
     timeout: 30000,
     retries: 2,
     reporter: [
@@ -14,7 +13,7 @@ export default defineConfig({
         }]
     ],
     use: {
-        baseURL: BASE_URL, // Usa la misma URL base para todas las pruebas
+        baseURL: BASE_URL, 
         trace: 'on-first-retry',
     },
     projects: [

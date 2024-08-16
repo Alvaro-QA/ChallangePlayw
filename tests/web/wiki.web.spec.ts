@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 import { PokemonPage } from '../../pages/PokemonPage';  
-import { hashSecretKey, readTestData } from '../../config/utils';
+import { hashSecretKey, readTestData, validateImageFile } from '../../config/utils'; // Asegúrate de importar validateImageFile
 import * as path from 'path';
 
 const testDataFilePath = 'tests/data/pokemon_data.xlsx';
@@ -14,6 +14,8 @@ const getImageFileName = (pokemonName: string): string => {
 interface PokemonData {
     name: string;
 }
+
+
 
 test.describe('Pruebas de Wikipedia para Pokémon', () => {
     let testData: PokemonData[];
@@ -75,6 +77,9 @@ const validatePokemon = async (page: Page, data: PokemonData) => {
         // Descargar y guardar la imagen
         const imageName = getImageFileName(name);
         await pokemonPage.downloadAndSaveImage(absoluteImageUrl, imageName);
+
+        // Validar el archivo de imagen
+        validateImageFile(imageName); 
     } else {
         throw new Error('No se encontró la URL de la imagen.');
     }

@@ -8,13 +8,10 @@ const TIME_LIMIT = 10000; // 10 segundos en milisegundos
 // Test suite para la validación de Pokémon
 test.describe('Validación de Pokémon', () => {
 
-    
     // Test para validación por ID
     test('Validar Pokémon por ID', async ({ request }) => {
         await runValidationTests(request, 'ID');
     });
-
-
 
     // Test para validación por Nombre
     test('Validar Pokémon por Nombre', async ({ request }) => {
@@ -25,6 +22,7 @@ test.describe('Validación de Pokémon', () => {
 // Función auxiliar para ejecutar pruebas
 async function validatePokemon(request: APIRequestContext, data: PokemonData, key: string, keyType: 'ID' | 'Nombre') {
     console.log(`Clave secreta encriptada: ${hashSecretKey}`);
+    console.log(`Validando Pokémon ${keyType}: ${key}`);
 
     const startTime = new Date();
 
@@ -32,7 +30,6 @@ async function validatePokemon(request: APIRequestContext, data: PokemonData, ke
         const response = await request.get(`${BASE_URL}/pokemon/${key}`);
         const responseBody = await response.json();
 
-        console.log(`Estado de la respuesta: ${response.status()}`);
         // Validaciones
         expect(response.status()).toBe(200);
         expect(responseBody.id).toBe(data.id);
@@ -44,8 +41,8 @@ async function validatePokemon(request: APIRequestContext, data: PokemonData, ke
 
         const endTime = new Date();
         const responseTime = endTime.getTime() - startTime.getTime();
-        console.log(`Tiempo de respuesta ${keyType}: ${responseTime} ms`);
-        expect(responseTime).toBeLessThan(TIME_LIMIT);
+
+        return responseTime; // Retorna el tiempo de respuesta para acumular
     } catch (error) {
         console.error(`Error en el test para ${keyType}: ${key}`, error);
         throw error;
@@ -56,13 +53,21 @@ async function validatePokemon(request: APIRequestContext, data: PokemonData, ke
 async function runValidationTests(request: APIRequestContext, keyType: 'ID' | 'Nombre') {
     const testData = await testDataPromise;
 
+    let totalResponseTime = 0; // Variable para acumular el tiempo total de respuesta
+
     for (const [index, data] of testData.entries()) {
         if (!data.name || !data.abilities || (keyType === 'ID' && !data.id)) {
             throw new Error(`Datos inválidos en la fila ${index + 1}`);
         }
 
         const key = keyType === 'ID' ? data.id.toString() : data.name;
-        await validatePokemon(request, data, key, keyType);
+        const responseTime = await validatePokemon(request, data, key, keyType);
+        totalResponseTime += responseTime; // Acumula el tiempo de respuesta
     }
-}
 
+    const endDate = new Date();
+    console.log(`Tiempo total de respuesta para prueba por ${keyType}: ${totalResponseTime} ms`);
+    console.log(`Fecha y hora de finalización del test: ${endDate.toISOString()}`);
+
+    expect(totalResponseTime).toBeLessThan(TIME_LIMIT); // Verifica el tiempo total
+}
