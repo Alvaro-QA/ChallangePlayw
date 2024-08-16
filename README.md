@@ -39,9 +39,11 @@ Puedes acceder a https://playwright.dev/docs/intro para revisar la documentacion
   ## Configuración
 
 ### Archivo `.env`
-Asegúrate de crear un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno:
+
+Asegúrate de crear un archivo `.env` en la raíz del proyecto con la siguiente variable de entorno para utilizar tu clave secreta:
 
 SECRET_KEY=your-secret-key
+
 
 ```    
 ```
